@@ -1,6 +1,9 @@
 package net.mattias.lightsabers;
 
 import com.mojang.logging.LogUtils;
+import net.mattias.lightsabers.block.ModBlocks;
+import net.mattias.lightsabers.item.ModCreativeModeTabs;
+import net.mattias.lightsabers.item.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.food.FoodProperties;
@@ -79,6 +82,9 @@ public class Lightsabers {
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
+        ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
+        ModCreativeModeTabs.register(modEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -87,8 +93,6 @@ public class Lightsabers {
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
-            event.accept(EXAMPLE_BLOCK_ITEM);
     }
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
