@@ -4,16 +4,17 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.mattias.lightsabers.sound.ModSounds;
 
 public class CustomSword extends SwordItem {
 
-    public CustomSword(Tier tier, int attackDamage, float attackSpeed, Item.Properties properties) {
+    public CustomSword(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
         super(tier, attackDamage, attackSpeed, properties);
     }
 
@@ -45,7 +46,7 @@ public class CustomSword extends SwordItem {
 
         @Override
         public Ingredient getRepairIngredient() {
-            return Ingredient.of(Items.DIAMOND); // Can be repaired with diamonds
+            return Ingredient.of(net.minecraft.world.item.Items.DIAMOND); // Can be repaired with diamonds
         }
     };
 
@@ -53,10 +54,9 @@ public class CustomSword extends SwordItem {
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected) {
         if (isSelected && entity instanceof Player) {
             Player player = (Player) entity;
-            if (world.getGameTime() % 40 == 0) {  // Adjust time interval as needed
+            if (world.getGameTime() % 20 == 0) {  // Adjust time interval as needed
                 world.playSound(null, player.getX(), player.getY(), player.getZ(),
-                        ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("lightsabers:item.light_saber.hold")),
-                        SoundSource.PLAYERS, 1.0F, 1.0F);
+                        ModSounds.LIGHT_SABER_HOLD.get(), net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
             }
         }
         super.inventoryTick(stack, world, entity, itemSlot, isSelected);
@@ -66,8 +66,7 @@ public class CustomSword extends SwordItem {
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (attacker instanceof Player) {
             attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
-                    ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("lightsabers:item.light_saber.swing")),
-                    SoundSource.PLAYERS, 1.0F, 1.0F);
+                    ModSounds.LIGHT_SABER_SWING.get(), net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
         }
         return super.hurtEnemy(stack, target, attacker);
     }

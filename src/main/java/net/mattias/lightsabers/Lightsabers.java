@@ -5,6 +5,7 @@ import net.mattias.lightsabers.block.ModBlocks;
 import net.mattias.lightsabers.item.ModCreativeModeTabs;
 import net.mattias.lightsabers.item.ModItems;
 import net.mattias.lightsabers.item.CustomSword;
+import net.mattias.lightsabers.sound.ModSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -52,15 +53,6 @@ public class Lightsabers {
     // Create a Deferred Register to hold SoundEvents which will all be registered under the "lightsabers" namespace
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
 
-    // Define sound events
-    public static final RegistryObject<SoundEvent> LIGHT_SABER_HOLD = SOUNDS.register("item.light_saber.hold",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, "item.light_saber.hold")));
-    public static final RegistryObject<SoundEvent> LIGHT_SABER_SWING = SOUNDS.register("item.light_saber.swing",
-            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, "item.light_saber.swing")));
-
-    // Register a custom sword
-    public static final RegistryObject<Item> CUSTOM_SWORD = ITEMS.register("custom_sword",
-            () -> new CustomSword(CustomSword.CUSTOM_TIER, 3, -2.4F, new Item.Properties()));
 
     public Lightsabers() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -85,6 +77,7 @@ public class Lightsabers {
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
+        ModSounds.register(modEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
