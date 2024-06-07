@@ -1,12 +1,18 @@
 {
-  "item.light_saber.hold": {
+  "light_saber_hold": {
     "sounds": [
-      "lightsabers:light_saber_hold"
+      {
+        "name": "lightsabers:light_saber_hold",
+        "stream": false
+      }
     ]
   },
-  "item.light_saber.swing": {
+  "light_saber_swing": {
     "sounds": [
-      "lightsabers:light_saber_swing"
+      {
+        "name": "lightsabers:light_saber_swing",
+        "stream": false
+      }
     ]
   }
 }

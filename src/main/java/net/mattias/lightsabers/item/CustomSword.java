@@ -11,8 +11,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.mattias.lightsabers.sound.ModSounds;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CustomSword extends SwordItem {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomSword.class);
 
     public CustomSword(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
         super(tier, attackDamage, attackSpeed, properties);
@@ -55,6 +58,7 @@ public class CustomSword extends SwordItem {
         if (isSelected && entity instanceof Player) {
             Player player = (Player) entity;
             if (world.getGameTime() % 20 == 0) {  // Adjust time interval as needed
+                LOGGER.info("Playing hold sound for lightsaber.");
                 world.playSound(null, player.getX(), player.getY(), player.getZ(),
                         ModSounds.LIGHT_SABER_HOLD.get(), net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
             }
@@ -65,6 +69,7 @@ public class CustomSword extends SwordItem {
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (attacker instanceof Player) {
+            LOGGER.info("Playing swing sound for lightsaber.");
             attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
                     ModSounds.LIGHT_SABER_SWING.get(), net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
         }
