@@ -1,0 +1,12 @@
+{
+  "item.light_saber.hold": {
+    "sounds": [
+      "lightsabers:light_saber_hold"
+    ]
+  },
+  "item.light_saber.swing": {
+    "sounds": [
+      "lightsabers:light_saber_swing"
+    ]
+  }
+}
