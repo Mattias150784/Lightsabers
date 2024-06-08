@@ -1,18 +1,14 @@
 {
   "light_saber_hold": {
+    "subtitle":"sounds.lightsabers.light_saber_hold",
     "sounds": [
-      {
-        "name": "lightsabers:light_saber_hold",
-        "stream": false
-      }
+       "lightsabers:light_saber_hold"
     ]
   },
-  "light_saber_swing": {
-    "sounds": [
-      {
-        "name": "lightsabers:light_saber_swing",
-        "stream": false
-      }
-    ]
+    "light_saber_swing": {
+      "subtitle": "sounds.lightsabers.light_saber_swing",
+      "sounds": [
+        "lightsabers:light_saber_swing"
+      ]
+    }
   }
-}
