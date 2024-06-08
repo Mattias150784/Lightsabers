@@ -80,8 +80,8 @@ public class CustomSword extends SwordItem {
             long currentTime = player.level().getGameTime();
             if (player.getMainHandItem().getItem() instanceof CustomSword) {
                 if (currentTime - lastAttackSoundTime > 20) { // Cooldown for attack sound
-                    attacker.level().playSeededSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
-                            ModSounds.LIGHT_SABER_SWING.get(), SoundSource.PLAYERS, 1.0F, 1.0F, player.getRandom().nextLong());
+                    attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
+                            ModSounds.LIGHT_SABER_SWING.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
                     lastAttackSoundTime = currentTime;
                     System.out.println("Playing swing sound");
                 }
@@ -89,5 +89,4 @@ public class CustomSword extends SwordItem {
         }
         return super.hurtEnemy(stack, target, attacker);
     }
-
     }
