@@ -1,85 +1,51 @@
 package net.mattias.lightsabers.item;
 
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
+import net.mattias.lightsabers.KeyBindings;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.mattias.lightsabers.sound.ModSounds;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class CustomSword extends SwordItem {
-
-    private long lastAttackSoundTime = 0;
+    private static final String EXTENDED_KEY = "Extended";
+    public static final Tier CUSTOM_TIER = CustomTiers.LIGHTSABER;
 
     public CustomSword(Tier tier, int attackDamage, float attackSpeed, Properties properties) {
         super(tier, attackDamage, attackSpeed, properties);
     }
 
-    public static final Tier CUSTOM_TIER = new Tier() {
-        @Override
-        public int getLevel() {
-            return 3; // Diamond level
-        }
-
-        @Override
-        public int getUses() {
-            return 1561; // Durability
-        }
-
-        @Override
-        public float getSpeed() {
-            return 8.0F;
-        }
-
-        @Override
-        public float getAttackDamageBonus() {
-            return 3.0F;
-        }
-
-        @Override
-        public int getEnchantmentValue() {
-            return 10;
-        }
-
-        @Override
-        public Ingredient getRepairIngredient() {
-            return Ingredient.of(net.minecraft.world.item.Items.DIAMOND); // Can be repaired with diamonds
-        }
-    };
-
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected) {
-        if (entity instanceof Player player) {
-            if (player.getMainHandItem().is(ModItems.LIGHT_SABER.get())) {
-                if (isSelected) {
-                    long currentTime = world.getGameTime();
-                    if (currentTime % 20 == 0) {  // Adjust time interval as needed
-                        world.playSound(null, player.getX(), player.getY(), player.getZ(),
-                                ModSounds.LIGHT_SABER_HOLD.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
-                    }
-                }
+        if (entity instanceof Player player && isSelected) {
+            if (KeyBindings.TOGGLE_LIGHTSABER.isDown()) {
+                toggleExtended(stack);
             }
         }
         super.inventoryTick(stack, world, entity, itemSlot, isSelected);
     }
 
-    @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof Player player) {
-            long currentTime = player.level().getGameTime();
-            if (player.getMainHandItem().is(ModItems.LIGHT_SABER.get())) {
-                attacker.level().playSeededSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
-                        ModSounds.LIGHT_SABER_SWING.get(), SoundSource.PLAYERS, 1.0F, 1.0F, attacker.getUUID().getLeastSignificantBits());
-                lastAttackSoundTime = currentTime;
-                System.out.println("Playing swing sound");
-            }
-        }
+    private void toggleExtended(ItemStack stack) {
+        CompoundTag tag = stack.getOrCreateTag();
+        boolean extended = tag.getBoolean(EXTENDED_KEY);
+        tag.putBoolean(EXTENDED_KEY, !extended);
+        stack.setTag(tag);
+    }
 
-        return super.hurtEnemy(stack, target, attacker);
+    public static boolean isExtended(ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        return tag != null && tag.getBoolean(EXTENDED_KEY);
     }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void registerModelProperties() {
+        ItemProperties.register(ModItems.LIGHT_SABER.get(), new ResourceLocation("extended"),
+                (stack, world, entity, seed) -> isExtended(stack) ? 1.0F : 0.0F);
     }
+}
